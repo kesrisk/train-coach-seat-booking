@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Dare2Complete Assignment</title>
+</head>
+<body>
+<h1>Hello, welcome to Seat booking portal</h1>
+<h3 id = "full" style="color: red;"></h3>
+
+<p>Seats Available : <span id="seat_available"></span></p>
+
+
+<script>
+	var seats = [[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0,0,0,0,0],[0,0,0]];
+	var available = [7,7,7,7,7,7,7,7,7,7,7,3]
+	var total_seats = 80;
+	var r;
+
+	function indexOfMax(arr) {
+    if (arr.length === 0) {
+        return -1;
+    }
+
+    var max = arr[0];
+    var maxIndex = 0;
+
+    for (var i = 1; i < arr.length; i++) {
+        if (arr[i] > max) {
+            maxIndex = i;
+            max = arr[i];
+        }
+    }
+
+    return maxIndex;
+	}
+
+
+
+	function reserve(name, no_of_seats){
+
+		if (no_of_seats > total_seats) {
+			document.getElementById('full').innerHTML = "Sorry only " + total_seats + " are available";
+			return;
+		}
+		for(var i = 0; i<seats.length; i++){
+      if (available[i]>=no_of_seats){
+      total_seats -= no_of_seats;
+      available[i]-=no_of_seats;
+      
+      var j=0;
+      while((no_of_seats>0) && (j < seats[i].length)){
+      	if(seats[i][j]==0){
+        seats[i][j]=name;
+        no_of_seats--;
+      	}
+      	j++;
+      }
+       break;
+      }
+		}
+		if(no_of_seats > 0){
+	  	r = indexOfMax(available);
+	  	t = r;
+	  	var flag = 0;
+	  	var odd = 1;
+	  	var even = 1;
+	  	while(no_of_seats > 0){
+	  		for(var p = 0; p<seats[t].length; p++){
+	  			if(seats[t][p] == 0){
+	  				seats[t][p] = name;
+	  				available[t]--;
+	  				no_of_seats--;
+	  				total_seats--;
+	  			}
+	  		}
+	  		flag++;
+	  		if(flag%2 == 1){
+	  			if (r+odd<12) {
+	  				t = r+odd;
+	  				odd++;
+	  			}
+	  			else{
+	  				t = r-even;
+	  				even++;
+	  			}
+	  		}
+	  		if(flag%2 == 0){
+	  			if(r-even >= 0){
+	  				t = r-even;
+	  				even++;
+	  			}
+	  			else{
+	  				t = r+odd;
+	  				odd++;
+	  			}
+	  		}
+
+
+	  	}
+
+		}
+
+		
+		
+		// return(seats)
+	}
+
+reserve('1',2);
+reserve('2',6);
+
+reserve('3',6);
+
+reserve('4',6);
+reserve('5',6);
+reserve('6',5);
+reserve('7',3);
+reserve('8',6);
+reserve('9',6);
+reserve('0',6);
+reserve('11',6);
+reserve('12',6);
+reserve('13',6);
+reserve('14', 5);
+reserve('15', 3);
+reserve('16', 3);   //this will print only 2 seats available in the home page
+
+
+
+document.getElementById("seat_available").innerHTML = total_seats;	
+console.log(seats)
+console.log(total_seats)
+
+
+</script>
+
+
+
+</body>
+</html>
